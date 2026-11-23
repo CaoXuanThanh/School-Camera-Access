@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Bảng điều khiển dành cho phụ huynh - thông tin học sinh và danh sách camera được phép xem.">
+  <title>Parent Dashboard | School Camera</title>
+  <!-- CORE-02: Đồng bộ header/nav theo shell chung khi Thành bàn giao. -->
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/pages/parent-dashboard.css">
+  <script type="module" src="../js/pages/parent-dashboard.js"></script>
+</head>
+<body class="dashboard-page">
+  <header class="dashboard-header">
+    <div class="dashboard-container dashboard-header__inner">
+      <a class="dashboard-brand" href="parent-dashboard.html" aria-label="School Camera - trang tổng quan">
+        <span class="dashboard-brand__mark" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none"><path d="M24 12c-5.3-4.1-11.5-4.3-17-2.5v24c6.8-1.6 12.3-.8 17 3.2 4.7-4 10.2-4.8 17-3.2v-24C35.5 7.7 29.3 7.9 24 12Z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M24 12v24.5M10 15c4.3-.9 7.4-.5 10.7 1.6M38 15c-4.3-.9-7.4-.5-10.7 1.6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </span>
+        <span class="dashboard-brand__name">School Camera <span class="dashboard-brand__caption">PARENT PORTAL</span></span>
+      </a>
+      <span class="dashboard-header__divider" aria-hidden="true"></span>
+      <span class="dashboard-header__tagline">Nền tảng camera lớp học cho phụ huynh</span>
+      <span class="dashboard-header__role"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="9" cy="7" r="3"/><path d="M3 19v-2a6 6 0 0 1 12 0v2H3ZM17 4a3 3 0 0 1 0 6M18 13c2 0 3 2 3 4v2h-4"/></svg>Dành cho phụ huynh</span>
+    </div>
+  </header>
+
+  <main id="main-content" class="dashboard-container dashboard-main">
+    <section class="dashboard-intro" aria-labelledby="dashboard-title">
+      <div class="dashboard-intro__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="13" height="14" rx="3"/><path d="m16 10 5-3v10l-5-3"/></svg></div>
+      <div class="dashboard-intro__copy">
+        <p class="dashboard-eyebrow">TỔNG QUAN TÀI KHOẢN</p>
+        <h1 id="dashboard-title">Theo dõi lớp học của con</h1>
+        <p class="dashboard-intro__text">Thông tin học sinh và camera được hệ thống cấp quyền xem.</p>
+      </div>
+      <div class="dashboard-school-art" aria-hidden="true">
+        <svg viewBox="0 0 365 205" fill="none" role="presentation">
+          <defs><linearGradient id="school-wall" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fff8ee"/><stop offset="1" stop-color="#d3e9f9"/></linearGradient><linearGradient id="school-roof" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e7a67b"/><stop offset="1" stop-color="#c98176"/></linearGradient><linearGradient id="tree" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#8bdbab"/><stop offset="1" stop-color="#45ad96"/></linearGradient></defs>
+          <ellipse cx="186" cy="192" rx="168" ry="10" fill="#8fc9df" opacity=".22"/>
+          <g fill="#fff" opacity=".74"><path d="M47 61c0-10 8-18 18-18 3-15 25-15 29 1 13-1 21 12 16 21H47Z"/><path d="M269 33c0-8 6-14 14-14 3-14 23-14 25 1 11-1 18 10 14 18h-53Z"/></g>
+          <g><path d="M35 186V133M25 185v-39M332 186v-44" stroke="#b88f79" stroke-width="8" stroke-linecap="round"/><circle cx="35" cy="119" r="32" fill="url(#tree)" opacity=".84"/><circle cx="15" cy="143" r="25" fill="#a8ddb1"/><circle cx="57" cy="147" r="27" fill="#6cc3a1"/><circle cx="332" cy="126" r="35" fill="url(#tree)"/><circle cx="311" cy="148" r="27" fill="#a8e2b1"/><circle cx="351" cy="152" r="23" fill="#88cda8"/></g>
+          <path d="M82 93 185 54l105 39v88H82V93Z" fill="url(#school-wall)" stroke="#b4d2e8" stroke-width="3"/>
+          <path d="M72 95 185 44l115 51-5 12-110-47-108 47-5-12Z" fill="url(#school-roof)"/>
+          <rect x="111" y="106" width="148" height="75" rx="3" fill="#e0eff7" stroke="#a4c7de" stroke-width="2"/>
+          <rect x="161" y="126" width="48" height="55" fill="#69a9cc" stroke="#f7ffff" stroke-width="4"/>
+          <path d="M185 126v55" stroke="#f7ffff" stroke-width="3"/><path d="M161 151h48" stroke="#f7ffff" stroke-width="3"/>
+          <g fill="#82c5e1" stroke="#f7ffff" stroke-width="3"><rect x="95" y="111" width="25" height="32"/><rect x="250" y="111" width="25" height="32"/><rect x="129" y="111" width="22" height="29"/><rect x="219" y="111" width="22" height="29"/><rect x="95" y="151" width="25" height="24"/><rect x="250" y="151" width="25" height="24"/></g>
+          <path d="M171 66h28v20h-28z" fill="#fff9ee"/><circle cx="185" cy="77" r="12" fill="#fff" stroke="#aac5d9" stroke-width="3"/><path d="M185 70v7l5 3" stroke="#3f699b" stroke-width="2" stroke-linecap="round"/>
+          <path d="M185 45V17" stroke="#527a9c" stroke-width="3"/><path d="M186 17c12-5 14 5 26-1v15c-12 6-16-5-26 2V17Z" fill="#ef7f84"/>
+          <path d="M75 185h220" stroke="#8dbbd2" stroke-width="5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <button id="reload-button" class="dashboard-button dashboard-button--secondary" type="button" disabled>
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 6v5h-5M4 18v-5h5"/><path d="M5.8 9a7 7 0 0 1 12-2.5L20 11M4 13l2.2 4.5A7 7 0 0 0 18.3 15"/></svg> Tải lại dữ liệu
+      </button>
+    </section>
+
+    <div id="dashboard-notice" class="dashboard-notice" data-kind="loading" role="status" aria-live="polite">
+      <span class="dashboard-notice__icon" aria-hidden="true">i</span>
+      <span class="dashboard-notice__content"><span class="dashboard-notice__title">Đang tải thông tin...</span><span class="dashboard-notice__subtitle">Hệ thống đang cập nhật dữ liệu mới nhất cho tài khoản của bạn.</span></span>
+      <span class="dashboard-notice__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+    </div>
+
+    <section class="dashboard-section" aria-labelledby="children-title">
+      <div class="dashboard-section__heading">
+        <div class="dashboard-section__heading-info">
+          <span class="dashboard-section__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="m2 10 10-6 10 6-10 6-10-6ZM6 13v5c3.5 2.6 8.5 2.6 12 0v-5M22 10v7"/></svg></span>
+          <div><p class="dashboard-eyebrow">THÔNG TIN GIA ĐÌNH</p><h2 id="children-title">Học sinh của bạn</h2></div>
+        </div>
+        <span id="children-count" class="dashboard-counter" aria-label="Số học sinh">0 học sinh</span>
+      </div>
+      <div id="children-list" class="dashboard-grid dashboard-grid--children" aria-live="polite" aria-busy="true"></div>
+      <p id="children-empty" class="dashboard-empty" hidden>Chưa có thông tin học sinh trong tài khoản này.</p>
+    </section>
+
+    <section class="dashboard-section dashboard-section--cameras" aria-labelledby="cameras-title">
+      <div class="dashboard-section__heading dashboard-section__heading--wrap">
+        <div class="dashboard-section__heading-info">
+          <span class="dashboard-section__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><rect x="2" y="5" width="15" height="14" rx="3"/><path d="m17 10 5-3v10l-5-3"/></svg></span>
+          <div><p class="dashboard-eyebrow">CAMERA LỚP HỌC</p><h2 id="cameras-title">Danh sách camera</h2><p class="dashboard-subtext">Chỉ các camera thuộc phạm vi được cấp quyền mới được hiển thị.</p></div>
+        </div>
+        <span id="cameras-count" class="dashboard-counter" aria-label="Số camera">0 camera</span>
+      </div>
+      <div class="dashboard-camera-art" aria-hidden="true">
+        <svg viewBox="0 0 330 200" fill="none"><defs><linearGradient id="cam-body" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff"/><stop offset="1" stop-color="#a6d4f6"/></linearGradient><radialGradient id="cam-eye"><stop stop-color="#52dbf5"/><stop offset=".38" stop-color="#287ad2"/><stop offset="1" stop-color="#153c96"/></radialGradient></defs>
+          <ellipse cx="192" cy="175" rx="100" ry="19" stroke="#8cddfc" stroke-width="4"/><ellipse cx="192" cy="175" rx="72" ry="12" stroke="#c1efff" stroke-width="3"/>
+          <path d="M78 63h53a9 9 0 0 1 9 9v47a9 9 0 0 1-9 9H78a9 9 0 0 1-9-9V72a9 9 0 0 1 9-9Z" fill="#78c9ed" opacity=".65" transform="rotate(9 105 96)"/><path d="m100 83 25 14-25 15V83Z" fill="white" opacity=".9"/>
+          <rect x="161" y="27" width="72" height="34" rx="12" fill="#d8efff"/><path d="M135 83c0-39 26-57 64-57s65 18 65 57l-20 53c-12 43-74 43-88 0l-21-53Z" fill="url(#cam-body)" stroke="#9acaf5" stroke-width="4"/>
+          <path d="M143 81c24 18 88 19 112 0l-11 41c-28 10-67 10-90-1l-11-40Z" fill="#d7f0ff"/>
+          <circle cx="198" cy="111" r="40" fill="#edfaff" stroke="#a6d8fa" stroke-width="5"/><circle cx="198" cy="111" r="30" fill="url(#cam-eye)" stroke="#2a70c6" stroke-width="4"/><circle cx="198" cy="111" r="14" fill="#133985"/><circle cx="193" cy="105" r="7" fill="#d9faff" opacity=".9"/>
+          <circle cx="268" cy="64" r="4" fill="#7ec5ee"/><path d="M27 150c36-33 63 11 91-13M265 156c16-15 26-14 39-9" stroke="#bceaff" stroke-width="5" stroke-linecap="round" opacity=".65"/>
+        </svg>
+      </div>
+      <div class="dashboard-search">
+        <label for="camera-search">Tìm camera theo tên</label>
+        <div class="dashboard-search__field"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg><input id="camera-search" type="search" placeholder="Nhập tên camera..." autocomplete="off" disabled></div>
+        <p id="search-feedback" class="dashboard-subtext" role="status" aria-live="polite"></p>
+      </div>
+      <div id="cameras-list" class="dashboard-grid dashboard-grid--cameras" aria-live="polite" aria-busy="true"></div>
+      <p id="cameras-empty" class="dashboard-empty" hidden>Hiện chưa có camera nào được cấp cho tài khoản này.</p>
+      <p id="search-empty" class="dashboard-empty" hidden>Không tìm thấy camera phù hợp. Hãy thử từ khóa khác.</p>
+    </section>
+  </main>
+  <footer class="dashboard-footer"><div class="dashboard-container dashboard-footer__inner"><div class="dashboard-footer__identity"><strong>School Camera</strong><span>PARENT PORTAL</span></div><p>School Camera · Nội dung chỉ dành cho tài khoản được cấp quyền.</p><span class="dashboard-footer__trust"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m12 2 8 3v6c0 5.4-3.5 8.8-8 11-4.5-2.2-8-5.6-8-11V5l8-3Z"/><path d="m8 12 3 3 5-6"/></svg>Bảo mật · An toàn · Tin cậy</span></div></footer>
+</body>
+</html>
