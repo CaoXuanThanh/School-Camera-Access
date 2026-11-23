@@ -2,182 +2,82 @@
 
 **Quản lý quyền xem camera trường học theo từng phụ huynh và lớp học.**
 
-School Camera Access Platform hướng tới thay thế cách chia sẻ tài khoản camera theo lớp bằng danh tính riêng cho mỗi phụ huynh. Quyền truy cập được xác định từ quan hệ phụ huynh–học sinh–lớp học, giúp nhà trường cập nhật quyền khi học sinh chuyển lớp hoặc nghỉ học.
+Camera Access là ứng dụng frontend dành cho phụ huynh xem camera được cấp theo lớp của con đang học và quản trị viên theo dõi, đối soát quyền khi hồ sơ học sinh thay đổi. Ứng dụng chạy bằng **HTML5, CSS3 và Vanilla JavaScript** thuần, đi kèm dữ liệu, ảnh minh họa và video mẫu local.
 
-**Giai đoạn:** Frontend MVP · **Phạm vi:** Một trường · **Công nghệ:** HTML5 / CSS3 / Vanilla JavaScript
+[Repository](https://github.com/CaoXuanThanh/School-Camera-Access) · [Hợp đồng dữ liệu](docs/data-contract.md) · [Phân công công việc](docs/PHAN_CONG_CONG_VIEC.md) · [Quy tắc AI](.skill/skill.md)
 
-[Repository](https://github.com/CaoXuanThanh/FE-developer) · [Kiến trúc](#kiến-trúc) · [Khởi chạy](#khởi-chạy) · [Đóng góp](#đóng-góp)
+## Chạy local
 
-> Tài liệu thiết kế cho giai đoạn triển khai. Các tính năng mô tả bên dưới là phạm vi mục tiêu; chưa có bản phát hành hoặc Live Demo được xác minh. Frontend sử dụng dữ liệu và video mẫu, chưa kết nối hệ thống trường hoặc camera thật.
+Mở [index.html](index.html) bằng Chrome hoặc Edge, hoặc chạy HTTP server tĩnh bằng Node.js để kiểm tra cập nhật quyền giữa nhiều tab trên cùng origin (`http://127.0.0.1:5500/`):
 
-## Tổng quan sản phẩm
+```sh
+node tools/preview.cjs
+```
 
-Khi cả lớp dùng chung một tài khoản camera, nhà trường khó thu hồi quyền của riêng một phụ huynh mà không ảnh hưởng những người còn lại. Dự án tập trung vào lớp quản lý danh tính và quyền truy cập, không thay thế hệ thống đầu ghi/NVR.
+### Tài khoản demo
 
-- **Phụ huynh:** truy cập danh sách con, lớp và camera phù hợp trong một portal thống nhất.
-- **Nhà trường:** theo dõi quan hệ học sinh–phụ huynh, mô phỏng cập nhật lớp/trạng thái học và khóa quyền xem riêng từng phụ huynh.
-- **Định hướng tích hợp:** duy trì ranh giới giữa giao diện, nghiệp vụ và dữ liệu để phát triển API và kết nối hệ thống hiện hữu ở giai đoạn sau.
-
-Hiệu quả giảm thao tác quản trị và sai sót thu hồi quyền sẽ được đo trong pilot; chưa công bố số liệu tiết kiệm hoặc cam kết thương mại.
-
-## Phạm vi MVP
-
-| Phân hệ | Chức năng mục tiêu | Điểm vào |
+| Tài khoản | Vai trò | Mô tả dữ liệu mẫu |
 | --- | --- | --- |
-| Đăng nhập | Validation, đăng nhập demo, điều hướng theo role | `index.html` |
-| Parent Dashboard | Thông tin con/lớp, danh sách camera động, tìm kiếm và trạng thái quyền | `pages/parent-dashboard.html` |
-| Camera Viewer | Kiểm tra quyền, hiển thị camera, phát video mẫu và xử lý lỗi | `pages/camera-viewer.html` |
-| Profile | Cập nhật tên hiển thị và thông tin liên hệ, validation, lưu dữ liệu demo | `pages/profile.html` |
-| Admin Access | Tìm học sinh, xem quan hệ gia đình–lớp, cập nhật trạng thái và khóa/mở quyền PHHS | `pages/admin-access.html` |
+| `admin` | Quản trị (`admin`) | Quản trị lớp, học sinh, camera, tài khoản demo, tra cứu và đối soát quyền |
+| `trang@example.test` | Phụ huynh (`parent`) | Có 2 học sinh (`HS001` lớp `3A1`, `HS002` lớp `3A2`), được xem 3 camera gồm hành lang dùng chung |
+| `nam@example.test` | Phụ huynh (`parent`) | Có học sinh `HS003` lớp `4A1`, camera sân sinh hoạt đang ngoại tuyến |
+| `ha@example.test` | Phụ huynh (`parent`) | Liên kết `HS001` và `HS004` cùng lớp `3A1` (kiểm thử loại trùng camera & đồng phụ huynh) |
 
-LocalStorage lưu hồ sơ và trạng thái nghiệp vụ để dữ liệu còn sau khi tải lại trang. Danh sách được render từ mảng object; tìm kiếm dùng sự kiện `input`; các trang có trạng thái loading, empty, error và success phù hợp.
+Mật khẩu chung cho các tài khoản mẫu là `CameraDemo26`. Ảnh minh họa (`assets/images/`) và video mẫu (`assets/media/`) được nạp local.
 
-Ngoài phạm vi MVP: camera trực tiếp, playback lịch sử, Hikvision SDK, API trường, backend/database thật, đa trường, thanh toán và quản lý thiết bị đầy đủ. Video mẫu phải được gắn nhãn rõ trên giao diện.
+## Kiến trúc & Mã nguồn
 
-## Mô hình quyền truy cập
-
-Một phụ huynh có thể liên kết với nhiều học sinh; một học sinh có thể liên kết với nhiều phụ huynh. Mỗi học sinh đang học có một lớp hiện tại; mỗi camera thuộc một lớp trong MVP.
-
-| Điều kiện hoặc thay đổi | Hành vi mong đợi |
-| --- | --- |
-| PHHS được mở quyền và có con đang học tại lớp A | Có quyền đối với camera lớp A |
-| Nhiều con cùng một lớp | Camera được loại trùng theo ID |
-| Một con chuyển từ A sang B | Tính lại quyền; vẫn giữ A nếu còn con khác đang học tại A |
-| Không còn con đang học | Không có camera được phép xem |
-| Admin khóa quyền PHHS | Chặn toàn bộ camera của PHHS đó; vẫn cho đăng nhập để xem thông báo/hồ sơ |
-| Admin mở lại quyền | Tính từ quan hệ hiện tại, không khôi phục danh sách quyền cũ |
-| Camera hợp lệ nhưng disabled/offline | Hiển thị trạng thái, không phát video |
-
-Mặc định từ chối khi không có quan hệ hợp lệ. Profile không được sửa role, quyền, con hoặc lớp. Admin quản lý quyền nhưng không mặc nhiên được xem video của PHHS trong MVP.
-
-Thao tác đổi lớp/nghỉ học trong Admin là mô phỏng dữ liệu đầu vào từ hệ thống trường. Quy tắc này cần được nhà trường xác nhận trước pilot.
-
-## Kiến trúc
-
-Giao diện gọi một hợp đồng service thống nhất. Nghiệp vụ quyền được tách khỏi DOM và lưu trữ để kiểm thử độc lập.
+Giao diện gọi hợp đồng Promise thống nhất qua `service`. Nghiệp vụ tính quyền và lưu trữ local được tách riêng khỏi DOM để kiểm thử độc lập.
 
 ```mermaid
 flowchart TD
-    UI["Page modules"] --> API["service.js — API nội bộ async"]
-    API --> RULES["access.js — Quy tắc quyền"]
-    API --> STORE["store.js — Lưu trữ demo"]
-    STORE --> SEED["data.js — Seed"]
-    STORE --> LS["LocalStorage"]
+    UI["Page modules (assets/js/pages/)"] --> APP["app.js — Shell & hash routing"]
+    UI --> API["service.js — API nội bộ async"]
+    API --> CORE["camera-access.js — Lưu trữ & quy tắc quyền"]
+    CORE --> SEED["mock-data.js — Dữ liệu & lô đồng bộ mẫu"]
+    CORE --> LS["LocalStorage / SessionStorage"]
 ```
 
-| Thành phần | Trách nhiệm |
+| Thành phần | Vai trò |
 | --- | --- |
-| `js/data.js` | Dữ liệu mẫu và phiên bản dữ liệu; không ghi đè khi import |
-| `js/store.js` | Khởi tạo, đọc/ghi và reset dữ liệu demo theo namespace |
-| `js/access.js` | Hàm thuần tính quyền theo PHHS–học sinh–lớp–camera |
-| `js/service.js` | API nội bộ trả Promise; kiểm tra phiên/role, validate và điều phối dữ liệu |
-| `js/shared/session.js` | Kiểm tra phiên, điều hướng, đăng xuất và kiểm tra lại quyền qua service |
-| `js/pages/` | Bắt sự kiện, gọi service, render DOM và trạng thái giao diện |
-| `css/global.css` | Design tokens và thành phần dùng chung |
+| `index.html` & `assets/js/app.js` | Khung ứng dụng (portal shell), template và định tuyến hash theo vai trò |
+| `assets/css/global.css` & `assets/css/portal.css` | Design tokens, component nền và layout cổng quản trị |
+| `assets/js/mock-data.js` | Seed lớp, học sinh, phụ huynh, camera và lô đồng bộ hồ sơ mẫu |
+| `assets/js/camera-access.js` | Lưu trữ local theo namespace, tính quyền theo lớp, xem trước tác động và đối soát |
+| `assets/js/service.js` | Giao diện Promise cho mọi màn hình, kiểm tra phiên/vai trò, validate và sự kiện cập nhật quyền |
+| `assets/js/legacy-link.js` | Điều hướng link tĩnh từ `pages/*.html` sang hash route tương ứng |
+| `pages/admin-access.html` & `assets/js/pages/admin-access.js` | Cổng quản trị: tổng quan, học sinh & lớp, đối soát quyền, tra cứu quyền, danh mục camera, tài khoản demo, nhật ký |
+| `assets/images/` & `assets/media/` | Ảnh minh họa và video mẫu dùng chung |
 
-**Ranh giới bắt buộc:** page không đọc/ghi LocalStorage, không import seed và không sao chép thuật toán quyền. Service không thao tác DOM. Dữ liệu người dùng được render bằng DOM an toàn; không ghép trực tiếp vào HTML.
+**Ranh giới bắt buộc:** page module không đọc/ghi `localStorage`, không truy cập trực tiếp seed và không tự tính quyền. Service không thao tác DOM. Trang chính khai báo CSP cho tài nguyên local và không chạy script inline.
 
-Các API chủ chốt: `login`, `getCurrentUser`, `getParentDashboard`, `getCameraView`, `getMyProfile`, `updateMyProfile`, `getAdminOverview`, `setStudentEnrollment`, `setParentAccess`, `logout`.
+## Phân công nhóm & Trạng thái tích hợp
 
-Hợp đồng chi tiết hiện nằm ở Phụ lục A của tài liệu phân công; khi khởi tạo source, chuyển vào `docs/data-contract.md` làm nguồn chuẩn duy nhất. Khi có backend, thay implementation phía sau service và giữ hợp đồng UI ổn định ở mức có thể. Backend phải thực thi quyền; thay `fetch()` đơn thuần chưa tạo ra hệ thống Production.
+Chi tiết task, tiêu chí nghiệm thu và quy trình Git nằm trong [docs/PHAN_CONG_CONG_VIEC.md](docs/PHAN_CONG_CONG_VIEC.md).
 
-## Cấu trúc repository
+| Thành viên | Vai trò & Gói việc | Phạm vi file chính | Trạng thái |
+| --- | --- | --- | --- |
+| **Cao Xuân Thành (tv1)** | Team Lead / Core + Admin + tích hợp | Core (`mock-data.js`, `camera-access.js`, `service.js`, `app.js`, `legacy-link.js`), `global.css`, `portal.css`, `pages/admin-access.html`, `assets/js/pages/admin-access.js`, `assets/images/`, `assets/media/`, `docs/`, `.skill/skill.md`, `tests/unit.test.cjs` | Đã hoàn thiện nền tảng Core & Admin Access |
+| **Nguyễn Minh Thiên (tv2)** | Parent Dashboard | `pages/parent-dashboard.html`, `assets/css/pages/parent-dashboard.css`, `assets/js/pages/parent-dashboard.js`, `docs/prompt-logs/tv2.md` | Chờ PR tích hợp |
+| **Lương Minh Đạt (tv3)** | Login | `assets/css/pages/login.css`, `assets/js/pages/login.js`, `#login-template`, `docs/prompt-logs/tv3.md` | Chờ PR tích hợp |
+| **Tất Huy Tuấn (tv4)** | Camera Viewer | `pages/camera-viewer.html`, `assets/css/pages/camera-viewer.css`, `assets/js/pages/camera-viewer.js`, `docs/prompt-logs/tv4.md` | Chờ PR tích hợp |
+| **Đào Nhựt Quang Minh (tv5)** | Profile + QA | `pages/profile.html`, `assets/css/pages/profile.css`, `assets/js/pages/profile.js`, `docs/qa-checklist.md`, `docs/prompt-logs/tv5.md` | Chờ PR tích hợp |
 
-Cấu trúc mục tiêu dưới đây chưa phải xác nhận tất cả file đã tồn tại trong repo.
+> Khi các màn hình của TV2–TV5 chưa được merge, mở `index.html` sẽ hiển thị điểm vào Core để mở nhanh phiên `admin` kiểm thử đầy đủ Cổng quản trị (`#/quan-tri`). Khi từng thành viên merge PR định nghĩa hàm `renderLogin`, `renderParent`, `renderViewer`, `renderProfile`, `app.js` sẽ tự động kích hoạt màn hình tương ứng.
 
-| Đường dẫn | Nội dung |
-| --- | --- |
-| `index.html` | Login |
-| `pages/` | `parent-dashboard.html`, `camera-viewer.html`, `profile.html`, `admin-access.html` |
-| `css/global.css` | Style nền và CSS Variables |
-| `css/pages/` | `login.css`, `parent-dashboard.css`, `camera-viewer.css`, `profile.css`, `admin-access.css` |
-| `js/` | `data.js`, `store.js`, `access.js`, `service.js` |
-| `js/shared/session.js` | Helper phiên và điều hướng |
-| `js/pages/` | `login.js`, `parent-dashboard.js`, `camera-viewer.js`, `profile.js`, `admin-access.js` |
-| `assets/images/`, `assets/media/` | Hình ảnh và video mẫu |
-| `.skill/skill.md` | Quy tắc làm việc với AI được version cùng source |
-| `.github/pull_request_template.md` | Checklist gửi PR; bổ sung khi thiết lập repo |
-| `docs/PHAN_CONG_CONG_VIEC.md` | Ownership, task, quy trình Git và nghiệm thu |
-| `docs/data-contract.md`, `docs/qa-checklist.md` | Hợp đồng dữ liệu và ca kiểm thử |
-| `docs/prompt-logs/tv1.md` … `tv5.md` | Nhật ký AI theo thành viên |
-| `docs/wireframes/`, `docs/evidence/` | Thiết kế và minh chứng |
-| `PLAN.md`, `prompt_log.md`, `.gitignore` | Kế hoạch, tổng hợp prompt và quy tắc loại file khỏi Git |
+## Kiểm thử lõi quyền
 
-## Khởi chạy
+Chạy unit test kiểm tra logic quyền, chuyển lớp, nghỉ học, khóa tài khoản và chống ghi đè dữ liệu cũ (`STALE_DATA`) bằng Node.js:
 
-**Điều kiện:** repository đã có source MVP; máy có Git, VS Code, Chrome/Edge và HTTP server tĩnh như Live Server. Hướng dẫn này chưa phải xác nhận bản hiện tại của repo chạy được.
-
-```bash
-git clone https://github.com/CaoXuanThanh/FE-developer.git
-cd FE-developer
+```sh
+node --test tests/unit.test.cjs
 ```
 
-Mở thư mục bằng VS Code, chạy `index.html` qua Live Server. ES modules cần được phục vụ qua HTTP; không mở bằng `file://`. Không cần backend nghiệp vụ hoặc bước build trong thiết kế hiện tại.
+## Video mẫu
 
-- **Tài khoản demo:** công bố khi seed được triển khai.
-- **Live Demo:** bổ sung sau khi triển khai và kiểm tra URL.
-- **Dữ liệu:** giữ cùng host/port; LocalStorage không tự đồng bộ giữa máy.
-- **Phiên:** demo hai role tuần tự bằng đăng xuất/đăng nhập; chưa hỗ trợ nhiều phiên độc lập cùng origin.
-- **Reset:** chỉ xóa namespace ứng dụng, không dùng `localStorage.clear()`; không seed lại trên mỗi lần tải trang.
+- Lớp 3A1: [Pavel Danilyuk](https://www.pexels.com/video/an-empty-classroom-8342689/)
+- Lớp 3A2: [Erkan Avanoğlu](https://www.pexels.com/video/empty-classroom-with-desks-and-tables-20421536/)
+- Hành lang: [Joseph Park](https://www.pexels.com/video/empty-hallway-in-school-13008039/)
+- Sân sinh hoạt: [James Cover](https://www.pexels.com/video/an-empty-playground-7009336/)
 
-## Chất lượng và kiểm thử
-
-Một thay đổi chỉ hoàn thành khi đúng contract, qua review và chạy lại luồng liên quan sau merge.
-
-- Kiểm tra ở 375 px và 1280 px; HTML semantic, label và focus bàn phím rõ.
-- Không lỗi console chưa xử lý; form có validation và không lưu dữ liệu sai.
-- Kiểm thử nhiều con, chuyển lớp, nghỉ học, khóa/mở quyền và loại trùng camera.
-- Thử URL camera không được cấp quyền, missing ID, offline và video tải lỗi.
-- Khi viewer nhận cập nhật mất quyền: dừng player, bỏ nguồn và hiện thông báo.
-- Reload giữ thay đổi hợp lệ; seed không ghi đè dữ liệu đã chỉnh.
-
-Bộ ca kiểm thử cụ thể nằm trong tài liệu phân công. Không gắn nhãn “tests passing” khi chưa có kết quả thực thi.
-
-## Nhóm phát triển
-
-| Thành viên | Vai trò | Phạm vi sở hữu |
-| --- | --- | --- |
-| **Cao Xuân Thành** | Team Lead / Product Owner / Core Developer; điều phối nhóm | Kiến trúc, dữ liệu, quyền, service, Admin, review và tích hợp |
-| **Nguyễn Minh Thiên** | Frontend Developer | Parent Dashboard, danh sách động, tìm kiếm và responsive |
-| **Lương Minh Đạt** | Frontend Developer | Login, validation và điều hướng |
-| **Tất Huy Tuấn** | Frontend Developer | Camera Viewer, trạng thái phát và hỗ trợ demo |
-| **Đào Nhựt Quang Minh** | Frontend Developer / QA | Profile, validation, kiểm thử và báo lỗi |
-
-## Đóng góp
-
-Quy trình nhóm: tạo nhánh từ `main` → thay đổi theo task → commit/push lên nhánh → mở PR → review → merge → kiểm thử bản tích hợp.
-
-- `main` dành cho bản tích hợp chạy được; giữ nguyên nhánh bài tập cũ.
-- Mỗi PR có phạm vi nhỏ, kết quả kiểm thử và prompt log liên quan.
-- Thành phụ trách review/merge PR của thành viên. PR của Thành cần Thiên review để không tự duyệt.
-- Chỉ người được giao sở hữu mới sửa core/global CSS; thay đổi hợp đồng phải được phối hợp trước.
-- GitHub Projects theo dõi To-do / In Progress / Done. Done là đã kiểm thử và merge.
-
-Cấu hình bảo vệ `main` và hướng dẫn từng bước nằm trong tài liệu phân công. Đây là quy trình đề xuất, chưa xác nhận đã được bật trên GitHub.
-
-### Làm việc với AI
-
-`.skill/skill.md` phải là file riêng trong repository, do Thành duy trì. Tài liệu phân công xác định người và task; file quy tắc AI xác định phạm vi sửa, công nghệ, contract, style và điều kiện kiểm tra. Tên đường dẫn này là quy ước nhóm, không bảo đảm mọi công cụ tự nạp.
-
-Trước khi làm, thành viên đưa README, quy tắc AI, data contract và task hiện tại cho công cụ đọc; sau đó kiểm tra diff và chạy thử. Không coi kết quả AI là đã được review. Chưa tạo file `.skill/skill.md` trong bộ tài liệu bàn giao này.
-
-**Prompt nổi bật:** sẽ chọn 3–5 prompt đã thực sự sử dụng từ `prompt_log.md`, kèm thay đổi và kiểm thử. Chưa có nhật ký triển khai được xác minh để công bố tại đây.
-
-## Giới hạn bảo mật và lộ trình
-
-Frontend mock không phải ranh giới bảo mật. Không đưa credential NVR, token thật hoặc dữ liệu trẻ em thật vào repo/LocalStorage. Hệ thống Production cần xác thực, kiểm tra quyền phía server và bảo vệ cả nguồn media; ẩn nút hoặc kiểm tra role ở trình duyệt là chưa đủ.
-
-| Giai đoạn | Kết quả mục tiêu |
-| --- | --- |
-| Frontend MVP | Luồng người dùng hoàn chỉnh bằng dữ liệu/video mẫu |
-| Backend & Database | API, phiên xác thực, quyền phía server, dữ liệu quan hệ |
-| Integration | Xác minh API trường và thử nghiệm NVR được phép truy cập |
-| Pilot một trường | Kiểm chứng vận hành, thu hồi quyền, chất lượng phát và chi phí |
-
-Chưa xác minh endpoint/auth của API trường, model/firmware NVR, khả năng stream hoặc số người xem đồng thời. Chỉ quyết định mở rộng nhiều trường sau khi pilot chứng minh giá trị.
-
-## Tài liệu dự án
-
-Đặt README này tại gốc repository và file phân công tại `docs/PHAN_CONG_CONG_VIEC.md`. Các tài liệu còn lại được bổ sung trong quá trình triển khai; tránh liên kết giả hoặc placeholder thành tích.
-
-Cơ sở thiết kế: `CAMERA_PROJECT_CORE_V2.docx`, giáo trình Thiết kế Web và quyết định của nhóm. Phần đối chiếu môn học, lịch luyện tập và hợp đồng chi tiết được giữ trong tài liệu phân công để README tập trung vào sản phẩm và cách tham gia dự án.
+Các clip đi kèm theo [giấy phép Pexels](https://www.pexels.com/license/).

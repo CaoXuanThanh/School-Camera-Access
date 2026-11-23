@@ -1,0 +1,30 @@
+# Hệ thống & Editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Môi trường & Bí mật
+.env
+.env.*
+*.local
+
+# File tạm & Nhật ký kiểm thử
+*.log
+*.tmp
+temp-*
+*.bak
+/dist/
+/test-results/
+
+# Dependencies (dự án Vanilla JS không dùng npm, đề phòng thêm nhầm)
+node_modules/
+
+# Tài liệu nháp cá nhân
+/coursework/
+/local-course-archive/
+/docs/coursework/
+Camera FE Assignment*.docx
+/docs/demo-script.md
+/docs/dien-tap-180-phut.md
