@@ -55,46 +55,6 @@ const app = {
     });
   },
 
-  renderPendingModule(main, title, owner, files) {
-    main.innerHTML = `
-      <section class="panel empty-panel" role="status">
-        <h1>${this.html(title)}</h1>
-        <p class="muted">Phân hệ này thuộc phạm vi của <strong>${this.html(owner)}</strong> và chưa được tích hợp vào nhánh <code>main</code>.</p>
-        <p class="small muted">File dự kiến: <code>${this.html(files)}</code></p>
-      </section>
-    `;
-  },
-
-  renderCoreEntry() {
-    this.root.innerHTML = `
-      <main class="core-entry">
-        <section class="panel core-entry-card" aria-labelledby="core-entry-title">
-          <div class="core-entry-header">
-            <span class="brand"><span class="brand-mark" aria-hidden="true"><span class="camera-icon"></span></span>Camera Access</span>
-            <span class="badge">Core &amp; Admin Baseline</span>
-          </div>
-          <h1 id="core-entry-title">Nền tảng lõi &amp; Cổng quản trị</h1>
-          <p class="muted">Màn hình Đăng nhập (<code>login.js</code>) thuộc phạm vi TV3 (Lương Minh Đạt) và sẽ tự kích hoạt sau khi PR được merge.</p>
-          <p class="small muted">Trong giai đoạn chuẩn bị lõi, có thể mở trực tiếp phiên quản trị mẫu (<code>admin</code> / <code>CameraDemo26</code>) để kiểm thử toàn bộ luồng Core và Admin Access.</p>
-          <div class="role-actions">
-            <button class="button" type="button" id="open-admin-demo">Mở Cổng quản trị (admin)</button>
-          </div>
-        </section>
-      </main>
-    `;
-    const button = this.root.querySelector("#open-admin-demo");
-    button.addEventListener("click", async () => {
-      button.disabled = true;
-      try {
-        await service.login({ username: "admin", password: "CameraDemo26" });
-        location.hash = "/quan-tri";
-      } catch (failure) {
-        this.flash(failure.message || "Không mở được phiên quản trị demo.");
-        button.disabled = false;
-      }
-    });
-  },
-
   bindMobileMenu() {
     const side = this.root.querySelector(".portal-side");
     const menu = this.root.querySelector("#portal-menu");
@@ -162,17 +122,11 @@ const app = {
 
     if (!area) {
       document.title = "Camera Access · Cổng camera học đường";
-      if (typeof renderLogin === "function") {
-        await renderLogin();
-      } else {
-        this.renderCoreEntry();
-      }
+      await renderLogin();
       if (moveFocus) {
         const title = this.root.querySelector("h1");
-        if (title) {
-          title.tabIndex = -1;
-          title.focus();
-        }
+        title.tabIndex = -1;
+        title.focus();
         window.scrollTo(0, 0);
       }
       return;
@@ -263,19 +217,10 @@ const app = {
     const main = this.root.querySelector("#main-content");
     this.root.querySelector("#skip-content").addEventListener("click", () => main.focus());
     try {
-      if (area === "ho-so") {
-        if (typeof renderProfile === "function") await renderProfile(main);
-        else this.renderPendingModule(main, "Hồ sơ và cài đặt", "TV5 — Đào Nhựt Quang Minh", "pages/profile.html, assets/js/pages/profile.js");
-      } else if (admin) {
-        await renderAdmin(main, current[0], query);
-      } else if (area === "camera") {
-        if (typeof renderViewer === "function") await renderViewer(main, section);
-        else this.renderPendingModule(main, "Xem camera", "TV4 — Tất Huy Tuấn", "pages/camera-viewer.html, assets/js/pages/camera-viewer.js");
-      } else if (typeof renderParent === "function") {
-        await renderParent(main);
-      } else {
-        this.renderPendingModule(main, "Parent Dashboard", "TV2 — Nguyễn Minh Thiên", "pages/parent-dashboard.html, assets/js/pages/parent-dashboard.js");
-      }
+      if (area === "ho-so") await renderProfile(main);
+      else if (admin) await renderAdmin(main, current[0], query);
+      else if (area === "camera") await renderViewer(main, section);
+      else await renderParent(main);
     } catch (failure) {
       main.textContent = failure.message || "Không tải được trang.";
     }

@@ -1,0 +1,44 @@
+﻿.login-page { background: var(--canvas); }
+.login-shell {
+  --login-image: url("../../images/hallway.jpg");
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr);
+  min-height: 100svh;
+  max-width: 1320px;
+  margin-inline: auto;
+  padding: clamp(.9rem, 2vw, 1.55rem) clamp(1rem, 2.3vw, 2rem);
+}
+.login-side {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: clamp(1.35rem, 3vw, 2.35rem);
+  width: min(100%, 530px);
+  margin-inline: auto;
+  padding: clamp(.75rem, 2vw, 1.5rem) clamp(1rem, 4vw, 3rem);
+}
+.login-brand { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .6rem; }
+.login-content { align-self: center; }
+.login-content h1 { font-family: Cambria, Georgia, serif; font-size: clamp(2.15rem, 4vw, 3.35rem); font-weight: 600; letter-spacing: -.025em; }
+.login-intro { max-width: 38ch; margin-top: .65rem; }
+.login-content form { display: grid; gap: .95rem; margin-top: 1.5rem; }
+.login-field { display: grid; gap: .32rem; }
+.login-field label { font-size: .875rem; font-weight: 700; }
+.login-content .login-submit { margin-top: .15rem; min-height: 48px; }
+.login-content .error:not(:empty) { padding: .65rem .75rem; border-radius: 7px; background: #fbf0ef; }
+.login-accounts { margin-top: .95rem; border-block: 1px solid var(--line); }
+.login-accounts summary { min-height: var(--control-height); padding: .7rem .25rem; color: var(--accent-strong); font-size: .9rem; font-weight: 700; cursor: pointer; }
+.login-accounts p { margin-bottom: .5rem; }
+.login-accounts select { margin-bottom: .7rem; }
+.login-note { border-top: 1px solid var(--line); padding-top: .85rem; text-wrap: pretty; }
+.login-note p + p { margin-top: .15rem; }
+.login-photo {
+  border-radius: 12px;
+  background: var(--accent-soft) var(--login-image) center / cover no-repeat;
+}
+
+@media (max-width: 760px) {
+  .login-shell { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto 1fr; gap: 1rem; padding: 0 0 1rem; }
+  .login-side { grid-template-rows: auto auto auto; gap: 1.35rem; padding: 1rem var(--page-gutter) 0; }
+  .login-content { margin-top: .6rem; }
+  .login-photo { width: min(calc(100% - 2 * var(--page-gutter)), 498px); min-height: 110px; max-height: 300px; margin-inline: auto; }
+}
