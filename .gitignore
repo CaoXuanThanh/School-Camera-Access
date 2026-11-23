@@ -21,10 +21,11 @@ temp-*
 # Dependencies (dự án Vanilla JS không dùng npm, đề phòng thêm nhầm)
 node_modules/
 
-# Tài liệu nháp cá nhân
+# Tài liệu cá nhân và học phần
 /coursework/
 /local-course-archive/
 /docs/coursework/
+*PHAN_CONG_CONG_VIEC*.md
 Camera FE Assignment*.docx
 /docs/demo-script.md
 /docs/dien-tap-180-phut.md

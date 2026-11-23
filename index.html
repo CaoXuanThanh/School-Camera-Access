@@ -7,20 +7,59 @@
   <title>Camera Access</title>
   <link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/css/global.css">
+  <link rel="stylesheet" href="assets/css/pages/login.css">
   <link rel="stylesheet" href="assets/css/portal.css">
-  <!-- Page stylesheets for TV2–TV5 will be linked here when their PRs are merged -->
   <script defer src="assets/js/mock-data.js"></script>
   <script defer src="assets/js/camera-access.js"></script>
   <script defer src="assets/js/service.js"></script>
   <script defer src="assets/js/app.js"></script>
+  <script defer src="assets/js/pages/login.js"></script>
+  <script defer src="assets/js/pages/parent-dashboard.js"></script>
+  <script defer src="assets/js/pages/camera-viewer.js"></script>
   <script defer src="assets/js/pages/admin-access.js"></script>
-  <!-- Page scripts for TV2–TV5 (login.js, parent-dashboard.js, camera-viewer.js, profile.js) will be linked here on integration -->
+  <script defer src="assets/js/pages/profile.js"></script>
 </head>
 <body>
   <div id="app"></div>
   <p id="app-notice" class="app-notice" role="status"></p>
   <dialog id="app-dialog" aria-labelledby="dialog-title"></dialog>
   <noscript><p class="empty-state">Hãy bật JavaScript trong trình duyệt để chạy Camera Access.</p></noscript>
+
+  <template id="login-template">
+    <main class="login-shell">
+      <div class="login-side">
+        <div class="login-brand">
+          <span class="brand"><span class="brand-mark" aria-hidden="true"><span class="camera-icon"></span></span>Camera Access</span>
+          <span class="badge">Bản demo</span>
+        </div>
+        <section class="login-content" aria-labelledby="login-title">
+          <h1 id="login-title">Đăng nhập</h1>
+          <p class="muted login-intro">Dùng tài khoản phụ huynh hoặc quản trị để mở cổng camera học đường.</p>
+          <form id="login-form">
+            <div class="login-field">
+              <label for="username">Tên đăng nhập</label>
+              <input class="field" id="username" name="username" autocomplete="username" aria-describedby="login-error" required>
+            </div>
+            <div class="login-field">
+              <label for="password">Mật khẩu</label>
+              <input class="field" id="password" name="password" type="password" autocomplete="current-password" aria-describedby="login-error" required>
+            </div>
+            <p id="login-error" class="error" role="alert"></p>
+            <button class="button login-submit" type="submit">Đăng nhập</button>
+          </form>
+          <details class="login-accounts"><summary>Tài khoản dùng thử</summary>
+            <p class="small muted">Mật khẩu mẫu <code>CameraDemo26</code></p>
+            <label class="sr-only" for="demo-account">Chọn hồ sơ mẫu để điền tên đăng nhập</label>
+            <select class="field field-select" id="demo-account"><option value="">Chọn để điền tên đăng nhập</option></select>
+          </details>
+        </section>
+        <div class="login-note small muted">
+          <p>Hồ sơ và video trên cổng này là dữ liệu mẫu.</p>
+        </div>
+      </div>
+      <div class="login-photo" aria-hidden="true"></div>
+    </main>
+  </template>
 
   <template id="portal-template">
     <div class="portal">
