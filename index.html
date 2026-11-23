@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; media-src 'self' blob:; connect-src 'none'; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>Camera Access</title>
+  <link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/css/global.css">
+  <link rel="stylesheet" href="assets/css/pages/login.css">
+  <link rel="stylesheet" href="assets/css/portal.css">
+  <script defer src="assets/js/mock-data.js"></script>
+  <script defer src="assets/js/camera-access.js"></script>
+  <script defer src="assets/js/service.js"></script>
+  <script defer src="assets/js/app.js"></script>
+  <script defer src="assets/js/pages/login.js"></script>
+  <script defer src="assets/js/pages/parent-dashboard.js"></script>
+  <script defer src="assets/js/pages/camera-viewer.js"></script>
+  <script defer src="assets/js/pages/admin-access.js"></script>
+  <script defer src="assets/js/pages/profile.js"></script>
+</head>
+<body>
+  <div id="app"></div>
+  <p id="app-notice" class="app-notice" role="status"></p>
+  <dialog id="app-dialog" aria-labelledby="dialog-title"></dialog>
+  <noscript><p class="empty-state">Hãy bật JavaScript trong trình duyệt để chạy Camera Access.</p></noscript>
+
+  <template id="login-template">
+    <main class="login-shell">
+      <div class="login-side">
+        <div class="login-brand">
+          <span class="brand"><span class="brand-mark" aria-hidden="true"><span class="camera-icon"></span></span>Camera Access</span>
+          <span class="badge">Bản demo</span>
+        </div>
+        <section class="login-content" aria-labelledby="login-title">
+          <h1 id="login-title">Đăng nhập</h1>
+          <p class="muted login-intro">Dùng tài khoản phụ huynh hoặc quản trị để mở cổng camera học đường.</p>
+          <form id="login-form">
+            <div class="login-field">
+              <label for="username">Tên đăng nhập</label>
+              <input class="field" id="username" name="username" autocomplete="username" aria-describedby="login-error" required>
+            </div>
+            <div class="login-field">
+              <label for="password">Mật khẩu</label>
+              <input class="field" id="password" name="password" type="password" autocomplete="current-password" aria-describedby="login-error" required>
+            </div>
+            <p id="login-error" class="error" role="alert"></p>
+            <button class="button login-submit" type="submit">Đăng nhập</button>
+          </form>
+          <details class="login-accounts"><summary>Tài khoản dùng thử</summary>
+            <p class="small muted">Mật khẩu mẫu <code>CameraDemo26</code></p>
+            <label class="sr-only" for="demo-account">Chọn hồ sơ mẫu để điền tên đăng nhập</label>
+            <select class="field field-select" id="demo-account"><option value="">Chọn để điền tên đăng nhập</option></select>
+          </details>
+        </section>
+        <div class="login-note small muted">
+          <p>Hồ sơ và video trên cổng này là dữ liệu mẫu.</p>
+        </div>
+      </div>
+      <div class="login-photo" aria-hidden="true"></div>
+    </main>
+  </template>
+
+  <template id="portal-template">
+    <div class="portal">
+      <button class="button skip-link" id="skip-content" type="button">Đến nội dung chính</button>
+      <aside class="portal-side">
+        <a class="brand" href="#/" aria-label="Camera Access, trang chọn tài khoản">
+          <span class="brand-mark" aria-hidden="true"><span class="camera-icon"></span></span>
+          Camera Access
+        </a>
+        <p class="portal-role" data-role></p>
+        <nav class="portal-nav" aria-label="Điều hướng chính"></nav>
+        <div class="portal-side-bottom"></div>
+      </aside>
+      <div class="portal-content">
+        <header class="portal-top">
+          <button class="menu-toggle" type="button" aria-label="Mở menu" aria-haspopup="dialog" aria-controls="portal-menu" aria-expanded="false">
+            <span class="menu-icon" aria-hidden="true"></span>
+          </button>
+          <span class="portal-location" data-location></span>
+          <div class="portal-session">
+            <span class="badge">Demo</span>
+            <span class="session-name" data-account></span>
+            <button class="account-avatar" type="button" id="change-role" title="Đổi vai trò demo"></button>
+          </div>
+        </header>
+        <main class="portal-main" id="main-content" tabindex="-1"></main>
+      </div>
+      <dialog class="portal-menu" id="portal-menu" aria-labelledby="portal-menu-title">
+        <div class="portal-menu-body">
+          <div class="portal-menu-header">
+            <h2 class="brand" id="portal-menu-title"><span class="brand-mark" aria-hidden="true"><span class="camera-icon"></span></span>Camera Access</h2>
+            <button class="menu-close" type="button" aria-label="Đóng menu" autofocus><span aria-hidden="true">×</span></button>
+          </div>
+        </div>
+      </dialog>
+    </div>
+  </template>
+</body>
+</html>
